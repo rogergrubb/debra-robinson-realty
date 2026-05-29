@@ -1,48 +1,40 @@
 # Debra Robinson — The Full Estate
 
-Custom personalized website + digital growth engine for **Debra Robinson**,
-REALTOR® (CA DRE #01704867, SRES®) and 30-year estate liquidator serving the East Bay.
+A two-part site built by **Number One Son Software Development** (Roger Grubb) for
+**Debra Robinson**, REALTOR® (CA DRE #01704867, SRES®) & 30-year estate liquidator, East Bay CA.
 
-Built by **Number One Son Software Development** (Roger Grubb).
-
-## What this is
-A fast, mobile-first, **AI-search-ready** marketing site built around Debra's
-one-of-a-kind "Full Estate" offering — she sells the *contents* and the *house*.
+## Two routes
+- **`/` — the pitch.** A teach-then-sell presentation: how buyers, sellers, and AI
+  assistants find a Realtor in 2026, what a real Realtor website requires, the AI-search
+  opportunity, a reveal of the live site, and a one-time **$1,000** offer (no monthly fees).
+- **`/preview` — the product.** Debra's actual customer-facing "Full Estate" website
+  (revealed from the pitch after the value is established).
 
 ## Structure
 ```
-public/            → the website (static, deploy-ready)
-  index.html       → the page
-  styles.css       → styles
-  config.js        → site config (Supabase URL + publishable key)
-  main.js          → lead-form submit logic (→ Supabase)
+public/
+  index.html        → the pitch presentation
+  pitch.css, pitch.js
+  config.js          → shared Supabase config (publishable key; insert-only)
   robots.txt, sitemap.xml
-vercel.json        → static hosting config (serves /public)
-pitch/             → leave-behind sales pitch (PDF + DOCX)
-docs/              → full Growth Proposal (PDF + DOCX)
+  preview/           → the customer-facing realtor site
+    index.html, styles.css, main.js, config.js
+vercel.json          → static hosting (serves /public, cleanUrls)
+pitch/               → leave-behind sales pitch (PDF + DOCX)
+docs/                → full Growth Proposal (PDF + DOCX)
 ```
 
 ## Lead capture
-The consultation form inserts into the `debra_leads` table in Supabase
-(project `nag-platform`). Row Level Security allows **anonymous INSERT only** —
-the publishable key in `config.js` is safe to expose; it cannot read data.
-Leads are read by Roger via the Supabase service role / dashboard.
+Both the pitch CTA and the realtor form insert into the `debra_leads` table in Supabase
+(project `nag-platform`), RLS = anonymous INSERT only. The pitch "Yes" button logs an
+acceptance (`source: pitch-accept`) and opens a prefilled email to Roger.
 
-If the database call ever fails, the form gracefully falls back to opening a
-prefilled email to debrashouse@gmail.com so no lead is lost.
+## Business model
+One-time **$1,000** flat fee: build + AI/search integration + Google Business Profile +
+schema + lead system + analytics + deployment + handoff. No retainers, no monthly fees.
 
-## Built for Google + AI search (GEO)
-- schema.org `RealEstateAgent` + `FAQPage` structured data
-- semantic headings, plain-language answers, fast mobile load
-- service-area coverage and credibility markers in markup
-
-## Run locally
+## Deploy
 ```bash
-cd public && python3 -m http.server 8080   # then open http://localhost:8080
+vercel deploy --prod   # static; serves /public
 ```
-
-## Deploy (Vercel)
-```bash
-vercel deploy            # from repo root (needs a Vercel login/token)
-```
-No custom domain selected yet — deploys to a *.vercel.app preview URL.
+Live: https://debra-robinson-realty.vercel.app  (pitch) · /preview (site)
