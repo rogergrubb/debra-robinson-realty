@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
+<script>document.documentElement.className+=" js";</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -198,7 +199,11 @@
   <!-- ABOUT -->
   <section id="about" class="section section-alt">
     <div class="wrap about-grid">
-      <div class="about-photo" aria-hidden="true"><span>DR</span></div>
+      <figure class="portrait reveal">
+        <img class="about-img" src="https://www.spre.com/Content/UserData/717ff48c-7779-4bd7-b7f3-37b3eccb71e1_website.jpeg" alt="Debra Robinson, REALTOR and estate liquidator, East Bay California"
+             onerror="if(!this.dataset.f){this.dataset.f='1';this.src='https://photos.zillowstatic.com/fp/c0263b6f18c4d4aedea597fc2956570f-cc_ft_768.jpg'}else{this.style.display='none';var m=document.getElementById('about-mono');if(m)m.style.display='grid'}" />
+        <span id="about-mono" class="about-mono" aria-hidden="true">DR</span>
+      </figure>
       <div class="about-text">
         <p class="kicker">Meet Debra</p>
         <h2>A rare combination, built over decades</h2>
@@ -302,6 +307,8 @@
   <section id="contact" class="section section-cream">
     <div class="wrap contact-grid">
       <div class="contact-copy">
+        <div class="contact-avatar"><img src="https://www.spre.com/Content/UserData/717ff48c-7779-4bd7-b7f3-37b3eccb71e1_website.jpeg" alt="Debra Robinson"
+             onerror="if(!this.dataset.f){this.dataset.f='1';this.src='https://photos.zillowstatic.com/fp/c0263b6f18c4d4aedea597fc2956570f-cc_ft_768.jpg'}else{this.closest('.contact-avatar').style.display='none'}" /></div>
         <p class="kicker">Free Consultation</p>
         <h2>Let's talk about your home</h2>
         <p>Tell Debra a little about your situation and she'll reach out personally — no pressure, no obligation. Whether it's next month or next year, it's never too early to make a plan.</p>
@@ -368,5 +375,6 @@
 
 <script src="config.js"></script>
 <script src="main.js"></script>
+<script src="enhance.js"></script>
 </body>
 </html>

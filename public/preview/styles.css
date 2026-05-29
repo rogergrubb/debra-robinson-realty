@@ -179,3 +179,42 @@ p{margin:0 0 1rem}
 @media(max-width:900px){
   .steps,.solds{grid-template-columns:1fr}
 }
+
+/* ===== Glossy elevation pass ===== */
+.js .reveal{opacity:0;transform:translateY(22px)}
+.reveal{transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js .reveal{opacity:1;transform:none}}
+
+/* nav gains depth on scroll */
+.nav{transition:box-shadow .3s ease, background .3s ease}
+.nav.scrolled{box-shadow:0 8px 30px rgba(20,35,60,.12);background:rgba(255,255,255,.97)}
+
+/* button sheen + smoother lift */
+.btn{position:relative;overflow:hidden}
+.btn-gold::after{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);transition:left .65s ease;pointer-events:none}
+.btn-gold:hover::after{left:150%}
+
+/* card depth on hover */
+.feat,.step,.sold,.reviews blockquote,.tier{transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease}
+.feat:hover,.step:hover,.sold:hover,.reviews blockquote:hover{transform:translateY(-5px);box-shadow:0 22px 48px rgba(20,35,60,.16)}
+.tier:not(.tier-flagship):hover{transform:translateY(-5px);box-shadow:0 22px 48px rgba(20,35,60,.16)}
+.tier-flagship:hover{box-shadow:0 26px 56px rgba(191,143,0,.26)}
+.feat:hover{border-color:rgba(191,143,0,.5)}
+
+/* hero gets subtle grain + deeper glow for gloss */
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-inner{position:relative;z-index:1}
+
+/* glossy framed portrait */
+.portrait{position:relative;aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:linear-gradient(160deg,#1f3864,#33558a);box-shadow:0 34px 70px rgba(20,35,60,.26)}
+.portrait::after{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 0 0 1px rgba(212,175,55,.55), inset 0 -80px 90px -40px rgba(20,35,60,.55);pointer-events:none}
+.about-img{width:100%;height:100%;object-fit:cover;display:block}
+.about-mono{display:none;position:absolute;inset:0;place-items:center;font-family:var(--serif);font-weight:700;font-size:5rem;color:#d4af37}
+
+/* contact headshot avatar */
+.contact-avatar{width:88px;height:88px;border-radius:50%;overflow:hidden;border:3px solid #fff;box-shadow:0 10px 26px rgba(20,35,60,.2);margin-bottom:16px}
+.contact-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* trust numbers + sold prices get a soft gold sheen */
+.trust .num,.sold .price{background:linear-gradient(180deg,#1f3864,#33558a);-webkit-background-clip:text;background-clip:text}
