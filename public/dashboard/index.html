@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Visitor Intelligence · Debra Robinson</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1426'/%3E%3Ctext x='50%25' y='54%25' font-family='Georgia,serif' font-size='28' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle'%3EDR%3C/text%3E%3C/svg%3E" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#d4af37;--gold2:#bf8f00;--ink:#0b1426;--panel:rgba(255,255,255,.05);--line:rgba(255,255,255,.12);--muted:#9fb0c7}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 700px at 70% -10%,#15294d,#0b1426 60%);color:#eaf0f8;font-family:'Inter',system-ui,sans-serif;min-height:100vh}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 22px 60px}
+  header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .m{width:42px;height:42px;border-radius:10px;background:var(--gold);color:var(--ink);display:grid;place-items:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem}
+  .brand h1{font-family:'Playfair Display',serif;font-size:1.5rem;margin:0;font-weight:700}
+  .brand p{margin:0;color:var(--muted);font-size:.82rem;letter-spacing:1px;text-transform:uppercase}
+  .live{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem}
+  .dot{width:9px;height:9px;border-radius:50%;background:#39d98a;box-shadow:0 0 0 0 rgba(57,217,138,.7);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(57,217,138,.6)}70%{box-shadow:0 0 0 10px rgba(57,217,138,0)}100%{box-shadow:0 0 0 0 rgba(57,217,138,0)}}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .stat .n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1}
+  .stat .l{color:var(--muted);font-size:.8rem;letter-spacing:.5px;text-transform:uppercase;margin-top:6px}
+  .grid{display:grid;grid-template-columns:1.35fr .9fr;gap:18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .card h2{font-family:'Playfair Display',serif;font-size:1.1rem;margin:0;padding:16px 18px;border-bottom:1px solid var(--line)}
+  #globe{width:100%;height:520px;display:block}
+  .feed{max-height:520px;overflow:auto}
+  table{width:100%;border-collapse:collapse;font-size:.86rem}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap}
+  th{color:var(--muted);font-weight:600;font-size:.72rem;letter-spacing:.6px;text-transform:uppercase;position:sticky;top:0;background:#0e1c38}
+  td.loc{white-space:normal}
+  .ip{font-family:ui-monospace,Menlo,monospace;color:#cfe0f5}
+  .pg{font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .pg.preview{color:#9fd;border-color:rgba(150,255,221,.4)}
+  .empty{padding:40px 18px;color:var(--muted);text-align:center}
+  .foot{margin-top:20px;color:var(--muted);font-size:.78rem;text-align:center}
+  @media(max-width:880px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}#globe{height:380px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="m">DR</span>
+      <div><h1>Visitor Intelligence</h1><p>Debra Robinson · live globe</p></div>
+    </div>
+    <div class="live"><span class="dot"></span><span id="livetxt">Connecting…</span></div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="s-total">—</div><div class="l">Total visits</div></div>
+    <div class="stat"><div class="n" id="s-ips">—</div><div class="l">Unique IPs</div></div>
+    <div class="stat"><div class="n" id="s-countries">—</div><div class="l">Countries</div></div>
+    <div class="stat"><div class="n" id="s-last">—</div><div class="l">Last visit</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><h2>Where your visitors are</h2><div id="globe"></div></div>
+    <div class="card"><h2>Recent visitors</h2><div class="feed"><table><thead>
+      <tr><th>When</th><th>IP</th><th>Location</th><th>Page</th></tr>
+    </thead><tbody id="rows"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody></table></div></div>
+  </div>
+
+  <p class="foot">Persistent log stored in Supabase · auto-refreshes every 15s · prepared by Number One Son Software Development</p>
+</div>
+
+<script src="https://unpkg.com/globe.gl"></script>
+<script>
+(function(){
+  var SB="https://yezzmplootvssyrvsauf.supabase.co";
+  var KEY="sb_publishable_JdFhlLqi5UXVHkWEUrJcVg_4vCxbQ5b";
+  var globe=null;
+
+  function ago(t){
+    var s=Math.floor((Date.now()-new Date(t).getTime())/1000);
+    if(s<60)return s+"s ago"; var m=Math.floor(s/60); if(m<60)return m+"m ago";
+    var h=Math.floor(m/60); if(h<24)return h+"h ago"; return Math.floor(h/24)+"d ago";
+  }
+  function esc(x){return (x==null?"":String(x)).replace(/[<>&]/g,function(c){return{"<":"&lt;",">":"&gt;","&":"&amp;"}[c]});}
+  function loc(v){return [v.city,v.region,v.country].filter(Boolean).join(", ")||"Unknown";}
+
+  function initGlobe(){
+    if(globe||!window.Globe)return;
+    globe=Globe()(document.getElementById("globe"))
+      .globeImageUrl("//unpkg.com/three-globe/example/img/earth-night.jpg")
+      .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")
+      .backgroundColor("rgba(0,0,0,0)")
+      .showAtmosphere(true).atmosphereColor("#d4af37").atmosphereAltitude(0.16)
+      .pointLat("lat").pointLng("lng").pointColor(function(){return "#ffd470";})
+      .pointAltitude(function(d){return Math.min(0.03+d.count*0.012,0.26);})
+      .pointRadius(function(d){return Math.min(0.3+d.count*0.09,1.3);})
+      .pointLabel(function(d){return "<div style='font:13px Inter,sans-serif;background:#0b1426;color:#eaf0f8;padding:8px 10px;border:1px solid #d4af37;border-radius:8px'><b>"+esc(d.label)+"</b><br>"+d.count+" visit"+(d.count>1?"s":"")+"</div>";})
+      .ringColor(function(){return function(t){return "rgba(212,175,55,"+(1-t)+")";};})
+      .ringMaxRadius(4).ringPropagationSpeed(2).ringRepeatPeriod(900);
+    var c=globe.controls(); c.autoRotate=true; c.autoRotateSpeed=0.5; c.enableZoom=true;
+    sizeGlobe();
+    window.addEventListener("resize",sizeGlobe);
+  }
+  function sizeGlobe(){ if(!globe)return; var el=document.getElementById("globe"); globe.width(el.clientWidth).height(el.clientHeight); }
+
+  function render(data){
+    var total=data.length;
+    var ips={},countries={};
+    data.forEach(function(v){ if(v.ip)ips[v.ip]=1; if(v.country)countries[v.country]=1; });
+    document.getElementById("s-total").textContent=total.toLocaleString();
+    document.getElementById("s-ips").textContent=Object.keys(ips).length.toLocaleString();
+    document.getElementById("s-countries").textContent=Object.keys(countries).length.toLocaleString();
+    document.getElementById("s-last").textContent=total?ago(data[0].created_at):"—";
+    document.getElementById("livetxt").textContent=total?("tracking "+total+" visits"):"no visits yet";
+
+    // table (latest 30)
+    var tb=document.getElementById("rows");
+    if(!total){ tb.innerHTML='<tr><td colspan="4" class="empty">No visits logged yet. Share the link and watch them land here.</td></tr>'; }
+    else{
+      tb.innerHTML=data.slice(0,30).map(function(v){
+        return "<tr><td>"+esc(ago(v.created_at))+"</td><td class='ip'>"+esc(v.ip||"—")+"</td><td class='loc'>"+esc(loc(v))+"</td><td><span class='pg "+(v.page==="preview"?"preview":"")+"'>"+esc(v.page||"—")+"</span></td></tr>";
+      }).join("");
+    }
+
+    // globe points aggregated by ~0.1deg cell
+    var agg={};
+    data.forEach(function(v){
+      if(v.lat==null||v.lng==null)return;
+      var k=v.lat.toFixed(1)+","+v.lng.toFixed(1);
+      if(!agg[k])agg[k]={lat:+v.lat,lng:+v.lng,count:0,label:loc(v)};
+      agg[k].count++;
+    });
+    var pts=Object.keys(agg).map(function(k){return agg[k];});
+    if(globe){
+      globe.pointsData(pts);
+      // ping the most recent located visit
+      var recent=null;
+      for(var i=0;i<data.length;i++){ if(data[i].lat!=null&&data[i].lng!=null){recent=data[i];break;} }
+      globe.ringsData(recent?[{lat:+recent.lat,lng:+recent.lng}]:[]);
+      if(recent){ globe.pointOfView({lat:+recent.lat,lng:+recent.lng,altitude:2.2},800); }
+    }
+  }
+
+  function load(){
+    fetch(SB+"/rest/v1/debra_visits?select=*&order=created_at.desc&limit=1000",
+      {headers:{apikey:KEY,Authorization:"Bearer "+KEY}})
+      .then(function(r){return r.json();})
+      .then(function(d){ if(Array.isArray(d)) render(d); })
+      .catch(function(){ document.getElementById("livetxt").textContent="connection error"; });
+  }
+
+  function start(){ initGlobe(); load(); setInterval(load,15000); }
+  if(window.Globe) start(); else window.addEventListener("load",start);
+})();
+</script>
+</body>
+</html>
